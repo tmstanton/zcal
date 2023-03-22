@@ -6,7 +6,7 @@ import dynesty
 from dynesty import utils as dyfunc
 
 # main method
-def FitZg(scheme:str, ratios:np.ndarray, errors:np.ndarray, calibrations:np.ndarray, verbose:bool=True) -> tuple:
+def FitZg(scheme:str, ratios:np.ndarray, errors:np.ndarray, calibrations:np.ndarray, verbose:bool=True) -> np.ndarray:
 
     # set calibrations
     zcal.utils.SetCalibration(scheme)
@@ -49,6 +49,6 @@ def FitZg(scheme:str, ratios:np.ndarray, errors:np.ndarray, calibrations:np.ndar
 
     # extract median and error
     ql, qm, qh = dyfunc.quantile(samples.T[0], [0.16, 0.50, 0.84], weights=weights)
-    return  ql + 12., qm + 12., qh + 12.
+    return  np.array([ql + 12., qm + 12., qh + 12.])
 
     
