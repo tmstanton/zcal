@@ -124,7 +124,7 @@ def FitZg_DustCorrect(id:str, scheme:str, oiii:np.ndarray, oii:np.ndarray, hb:np
     results = sampler.results
 
     # create pickle file
-    outfile = open(f'./data/mosfire/CEERS{id}_{scheme}sampler.pkl', 'wb')
+    outfile = open(f'{zcal.options["res_dir"]}/samplers/{id}_{scheme}_sampler.pkl', 'wb')
     pickle.dump(sampler.results, outfile)
     outfile.close
 
@@ -140,16 +140,22 @@ def FitZg_DustCorrect(id:str, scheme:str, oiii:np.ndarray, oii:np.ndarray, hb:np
         cfig, caxes = dyplot.cornerplot(results, color='black', labels=['12+log(O/H)', 'E(B-V)'],
                                         label_kwargs={'fontsize':25},
                                         show_titles=True)
-        cfig.savefig(f'./plots/mosfire/CEERS{int(id)}_{scheme}_corner_2d.png')
+        try:
+            plot_id = int(id)
+        except:
+            plot_id = id
+        cfig.savefig(f'{zcal.options["plot_dir"]}/corners/{plot_id}_{scheme}_corner.png')
 
     # return to main
     logOHp12 = np.array([oh[1]+12, oh[2]-oh[1], oh[1]-oh[0]])
     EBVs = np.array([ebv[1], ebv[2]-ebv[1], ebv[1]-ebv[0]])
-    print(logOHp12, EBVs)
     return logOHp12, EBVs
 
 def FitZg_NoDust(id:str, scheme:str, oiii:np.ndarray, oii:np.ndarray, hb:np.ndarray, neiii:np.ndarray) -> np.ndarray:
     
+    print('-> [zcal]: not implemented...')
+    import sys
+    sys.exit()
     # initialise parameters
     utils.SetCalibration(scheme)
 
@@ -261,7 +267,11 @@ def FitZg_NoDust(id:str, scheme:str, oiii:np.ndarray, oii:np.ndarray, hb:np.ndar
         cfig, caxes = dyplot.cornerplot(results, color='black', labels=['log(O/H)',],
                                         label_kwargs={'fontsize':25},
                                         show_titles=True)
-        cfig.savefig(f'./plots/mosfire/{int(id)}_{scheme}_corner_1d.png')
+        try:
+            plot_id = int(id)
+        except:
+            plot_id = id
+        cfig.savefig(f'{zcal.options["res_dir"]}/corners/{plot_id}_{scheme}_corner_1d.png')
 
     # return to main
     logOHp12 = np.array([oh[1]+12, oh[2]-oh[1], oh[1]-oh[0]])
