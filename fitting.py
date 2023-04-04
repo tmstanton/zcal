@@ -75,7 +75,7 @@ def FitZg_DustCorrect(id:str, scheme:str, oiii:np.ndarray, oii:np.ndarray, hb:np
             calibrations.append('O2')
 
         # r23
-        if min(oiiic.n, oiic.n, hbc.n) > 0:
+        if (min(oiiic.n, oiic.n, hbc.n) > 0) & (scheme != 'bian'):
             r23 = unp.log10((oiiic + oiic) / hbc)
             y.append(unp.nominal_values(r23))
             yerr.append(unp.std_devs(r23))
@@ -124,7 +124,7 @@ def FitZg_DustCorrect(id:str, scheme:str, oiii:np.ndarray, oii:np.ndarray, hb:np
     results = sampler.results
 
     # create pickle file
-    outfile = open(f'./data/mosfire/{id}_{scheme}sampler.pkl', 'wb')
+    outfile = open(f'./data/mosfire/CEERS{id}_{scheme}sampler.pkl', 'wb')
     pickle.dump(sampler.results, outfile)
     outfile.close
 
@@ -140,11 +140,12 @@ def FitZg_DustCorrect(id:str, scheme:str, oiii:np.ndarray, oii:np.ndarray, hb:np
         cfig, caxes = dyplot.cornerplot(results, color='black', labels=['12+log(O/H)', 'E(B-V)'],
                                         label_kwargs={'fontsize':25},
                                         show_titles=True)
-        cfig.savefig(f'./plots/mosfire/{int(id)}_{scheme}_corner_2d.png')
+        cfig.savefig(f'./plots/mosfire/CEERS{int(id)}_{scheme}_corner_2d.png')
 
     # return to main
     logOHp12 = np.array([oh[1]+12, oh[2]-oh[1], oh[1]-oh[0]])
     EBVs = np.array([ebv[1], ebv[2]-ebv[1], ebv[1]-ebv[0]])
+    print(logOHp12, EBVs)
     return logOHp12, EBVs
 
 def FitZg_NoDust(id:str, scheme:str, oiii:np.ndarray, oii:np.ndarray, hb:np.ndarray, neiii:np.ndarray) -> np.ndarray:
@@ -201,7 +202,7 @@ def FitZg_NoDust(id:str, scheme:str, oiii:np.ndarray, oii:np.ndarray, hb:np.ndar
             calibrations.append('O2')
 
         # r23
-        if min(oiiic.n, oiic.n, hbc.n) > 0:
+        if (min(oiiic.n, oiic.n, hbc.n) > 0) & (scheme != 'bian'):
             r23 = unp.log10((oiiic + oiic) / hbc)
             y.append(unp.nominal_values(r23))
             yerr.append(unp.std_devs(r23))
