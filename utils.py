@@ -22,13 +22,30 @@ def SandersO32(x:float) -> float:
 def SandersNe3O2(x:float) -> float:
     return -0.386 - (0.998 * x) 
 
+# -=-=-=- NAKAJIMA 2022 CALIBRATIONS -=-=-=-
+# link: 
+
+def NakajimaO3(x:float) -> float:
+    return -0.277 - (3.182 * x) - (2.832 * x * x) - (0.637 * x * x * x)
+
+def NakajimaO2(x:float) -> float:
+    return 0.429 - (1.044 * x) - (4.586 * x * x) - (4.117 * x * x * x) - (1.145 * x * x * x * x) 
+
+def NakajimaR23(x:float) -> float:
+    return 0.515 - (1.474 * x) - (1.392 * x * x) - (0.274 * x * x * x)
+
+def NakajimaO32(x:float) -> float:
+    return -0.693 - (2.722 * x) - (1.201 * x * x)
+
+def NakajimaNe3O2(x:float) -> float:
+    return -0.317 + (0.161 * x) + (0.070 * x * x)
+
 # -=-=-=- BIAN CALIBRATIONS -=-=-=- 
 # link: 
 
 def BianO3(x:float) -> float:
     return 43.9836  + (-21.6211 * x) + (3.4277 * x ** 2) + (-0.1747 * x ** 3)
     
-
 def BianO2(x:float) -> float:
     print('-> [ERROR]: Bian O2 calibration does not exist. Returning nan.')
     return np.nan
@@ -54,6 +71,12 @@ def Sanders_logOH(x:np.ndarray) -> np.ndarray:
 
 def Sanders_x(logOH:np.ndarray) -> np.ndarray:
     return 12. + logOH - 8.
+
+def Nakajima_logOH(x:np.ndarray) -> np.ndarray:
+    return x - 12 + 8.69
+
+def Nakajima_x(logOH:np.ndarray) -> np.ndarray:
+    return 12 + logOH - 8.69
 
 # -=-=-=- RUNTIME SETTING METHODS -=-=-=-
 def SetCalibration(source:str) -> None:

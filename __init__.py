@@ -12,7 +12,9 @@ def SetOptions(calibrations:dict, errors:dict, options:dict, wavelengths:dict, s
         options['range'] = [6.7, 9.0]
     elif scheme.lower() == 'bian':
         options['range'] = [6.7, 9.0]
-    
+    elif scheme.lower() == 'nakajima':
+        options['range'] = [6.7, 9.0] # varies for diagnostic
+
     # misc options
     options['verbose']      = False
     options['corner_plots'] = True
@@ -60,6 +62,22 @@ def SetOptions(calibrations:dict, errors:dict, options:dict, wavelengths:dict, s
         # conversions
         options['x_to_oh'] = utils.Bian_logOH
         options['oh_to_x'] = utils.Bian_x
+    elif scheme.lower() == 'nakajima':
+        # set calibrations
+        calibrations['O3']    = utils.NakajimaO3
+        calibrations['O2']    = utils.NakajimaO2 
+        calibrations['R23']   = utils.NakajimaR23
+        calibrations['O32']   = utils.NakajimaO32
+        calibrations['Ne3O2'] = utils.NakajimaNe3O2
+        # set errors
+        errors['O3']    = 0.16
+        errors['O2']    = 0.27
+        errors['R23']   = 0.10
+        errors['O32']   = 0.39
+        errors['Ne3O2'] = 0.39
+        # conversions
+        options['x_to_oh'] = utils.Nakajima_logOH
+        options['oh_to_x'] = utils.Nakajima_x
     else:
         print('-> [zcal]: incorrect calibration scheme provided. Exiting...')
         sys.exit()
